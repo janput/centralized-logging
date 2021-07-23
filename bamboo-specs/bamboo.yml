@@ -15,7 +15,7 @@ stages:
 Build Project:
   tasks:
     - checkout:
-        repository: centralized-logging
+        repository: PAAS - centralized-logging
         force-clean-build: 'true'
     - checkout:
         repository: Master - ARCHI - bamboo
