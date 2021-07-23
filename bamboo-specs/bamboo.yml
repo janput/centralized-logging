@@ -11,7 +11,6 @@ stages:
       final: false
       jobs:
         - Build Project
-
 Build Project:
   tasks:
     - checkout:
@@ -25,7 +24,7 @@ Build Project:
         interpreter: SHELL
         scripts:
           - source scripts/tools/toolsrc
-            tools__init_path && tools__init_proxy && tools__init_docker_ci && tools__helm_add_onemrva_repo
+          - tools__init_path && tools__init_proxy && tools__init_docker_ci && tools__helm_add_onemrva_repo
           - sh deploy.sh onemrva
 
 variables: {}
