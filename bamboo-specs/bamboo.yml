@@ -2,7 +2,7 @@ version: 2
 
 plan:
   project-key: PAAS
-  key: PAAS-LOGS
+  key: PAASLOGS
   name: Centralized Logging
 
 stages:
