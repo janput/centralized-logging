@@ -1,0 +1,35 @@
+version: 2
+
+plan:
+  project-key: PAAS
+  key: PAAS-LOGS
+  name: Centralized Logging
+
+stages:
+  - Default Stage:
+      manual: false
+      final: false
+      jobs:
+        - Build Project
+
+Build Project:
+  tasks:
+    - checkout:
+        repository: centralized-logging
+        force-clean-build: 'true'
+    - checkout:
+        repository: Master - ARCHI - bamboo
+        path: scripts
+        force-clean-build: 'false'
+    - script:
+        interpreter: SHELL
+        scripts:
+          - source scripts/tools/toolsrc
+            tools__init_path && tools__init_proxy && tools__init_docker_ci && tools__helm_add_onemrva_repo
+          - sh deploy.sh onemrva
+
+variables: {}
+notifications: []
+labels: []
+other:
+  concurrent-build-plugin: system-default

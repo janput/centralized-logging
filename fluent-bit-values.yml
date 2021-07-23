@@ -1,0 +1,24 @@
+extraPorts:
+   - port: 5170
+     containerPort: 5170
+     protocol: TCP
+     name: tcp
+
+config:
+  ## https://docs.fluentbit.io/manual/pipeline/inputs
+  inputs: |
+    [INPUT]
+        Name tcp
+        Port 5170
+        Format json
+        Tag kube.*
+  ## https://docs.fluentbit.io/manual/pipeline/filters
+  outputs: |
+    [OUTPUT]
+        Name es
+        Match kube.*
+        Host elasticsearch-master
+        Logstash_Format On
+        Logstash_Prefix apps-logs
+        Replace_Dots On
+        Retry_Limit False
