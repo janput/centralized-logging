@@ -4,6 +4,3 @@ ingress:
     - host: centralized-logging-kibana.test.paas.onemrva.priv
       paths:
         - path: /
-#          backend:
-#            serviceName: kibana-kibana
-#            servicePort: 5601
