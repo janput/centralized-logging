@@ -1,2 +1,8 @@
 replicas: 1
 clusterHealthCheckParams: "local=true"
+ingress:
+  enabled: true
+  hosts:
+    - host: centralized-logging-es.test.paas.onemrva.priv
+      paths:
+        - path: /
