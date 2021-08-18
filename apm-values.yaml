@@ -1,0 +1,16 @@
+apmConfig:
+  apm-server.yml: |
+    apm-server:
+      host: "0.0.0.0:8200"
+      rum:
+        enabled: true
+
+    queue: {}
+
+    output.elasticsearch:
+      hosts: ["http://elasticsearch-master:9200"]
+
+ingress:
+  enabled: true
+  hosts:
+    - centralized-logging-apm.test.paas.onemrva.priv
