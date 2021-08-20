@@ -1,5 +1,4 @@
 daemonset:
-  hostNetworking: true
   extraEnvs: 
     - name: ELASTICSEARCH_HOSTS
       value: "http://centralized-logging-es.test.paas.onemrva.priv:80"
