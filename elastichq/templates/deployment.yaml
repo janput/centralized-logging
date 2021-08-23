@@ -35,7 +35,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: HQ_DEFAULT_URL
-              value: "{{ .Values.elasticHost }}"
+              value: {{ .Values.elasticHost | quote }}
           ports:
             - name: http
               containerPort: 5000
