@@ -29,7 +29,8 @@ Build Project:
           - sh deploy.sh onemrva
           - helm package elastichq/ --version "0.${bamboo.buildNumber}.0"
           - curl --fail -u "${bamboo_nexus_user}:${bamboo_nexus_secret}" "${bamboo.helm_repository_url}" --upload-file "elastichq-${bamboo.buildNumber}.tgz"
-variables: {}
+variables: 
+  helm_repository_url: "http://nexusprod.onemrva.priv/repository/helm/"
 notifications: []
 labels: []
 other:
