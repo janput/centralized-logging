@@ -26,9 +26,9 @@ Build Project:
           - set -e
           - source scripts/tools/toolsrc
           - tools__init_path && tools__init_proxy && tools__init_docker_ci && tools__helm_add_onemrva_repo
-          - sh deploy.sh onemrva
           - helm package elastichq/ --version "0.${bamboo.buildNumber}.0"
           - curl --fail -u "${bamboo_nexus_user}:${bamboo_nexus_secret}" "${bamboo.helm_repository_url}" --upload-file "elastichq-0.${bamboo.buildNumber}.0.tgz"
+          - sh deploy.sh onemrva
 variables: 
   helm_repository_url: "http://nexusprod.onemrva.priv/repository/helm/"
 notifications: []
