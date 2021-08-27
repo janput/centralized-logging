@@ -1,8 +1,8 @@
 daemonset:
   extraEnvs: 
     - name: ELASTICSEARCH_HOSTS
-      value: "http://centralized-logging-es.test.paas.onemrva.priv:80"
+      value: "http://elasticsearch-master:9200"
 deployment:
     extraEnvs: 
     - name: ELASTICSEARCH_HOSTS
-      value: "http://centralized-logging-es.test.paas.onemrva.priv:80"
+      value: "http://elasticsearch-master:9200"
