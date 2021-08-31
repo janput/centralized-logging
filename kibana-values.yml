@@ -35,7 +35,7 @@ kibanaConfig:
 ingress:
   enabled: true
   hosts:
-    - host: {{ Values.namespace }}-kibana.test.paas.onemrva.priv
+    - host: efk-test-kibana.test.paas.onemrva.priv
       paths:
         - path: /
 

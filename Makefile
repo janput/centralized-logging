@@ -17,18 +17,18 @@ install:
 	kubectl create namespace $(NAMESPACE) || true
 	helm upgrade --wait --timeout=$(TIMEOUT) --install --namespace $(NAMESPACE) --values elasticsearch-values.yml elasticsearch elastic/elasticsearch --version $(CHART_VERSION)
 	helm upgrade --wait --timeout=$(TIMEOUT) --install --namespace $(NAMESPACE) --values kibana-values.yml kibana elastic/kibana --version $(CHART_VERSION)
-	helm upgrade --wait --timeout=$(TIMEOUT) --install --namespace $(NAMESPACE) --values apm-values.yml apm-server elastic/apm-server --version $(CHART_VERSION)
-	helm upgrade --wait --timeout=$(TIMEOUT) --install --namespace $(NAMESPACE) --values fluent-bit.yml fluent-bit fluent/fluent-bit
-	helm upgrade --wait --timeout=$(TIMEOUT) --install --namespace $(NAMESPACE) --values elastichq-values.yml elastichq onemrva/elastichq
-	helm upgrade --wait --timeout=$(TIMEOUT) --install --namespace kube-system --values metricbeat-values.yml metricbeat elastic/metricbeat --version $(CHART_VERSION)
+	#helm upgrade --wait --timeout=$(TIMEOUT) --install --namespace $(NAMESPACE) --values apm-values.yml apm-server elastic/apm-server --version $(CHART_VERSION)
+	#helm upgrade --wait --timeout=$(TIMEOUT) --install --namespace $(NAMESPACE) --values fluent-bit.yml fluent-bit fluent/fluent-bit
+	#helm upgrade --wait --timeout=$(TIMEOUT) --install --namespace $(NAMESPACE) --values elastichq-values.yml elastichq onemrva/elastichq
+	#helm upgrade --wait --timeout=$(TIMEOUT) --install --namespace kube-system --values metricbeat-values.yml metricbeat elastic/metricbeat --version $(CHART_VERSION)
 	
 purge:
-	kubectl delete secrets elastic-credentials elastic-certificates elastic-certificate-pem elastic-certificate-crt || true
-	kubectl delete secret kibana || true
-	helm del --namespace kube-system metricbeat || true
-	helm del --namespace $(NAMESPACE) elastichq || true
-	helm del --namespace $(NAMESPACE) fluent-bit || true
-	helm del --namespace $(NAMESPACE) apm-server || true
+	kubectl delete secrets elastic-credentials elastic-certificates elastic-certificate-pem elastic-certificate-crt --namespace=$(NAMESPACE) || true
+	kubectl delete secret kibana --namespace=$(NAMESPACE) || true
+	#helm del --namespace kube-system metricbeat || true
+	#helm del --namespace $(NAMESPACE) elastichq || true
+	#helm del --namespace $(NAMESPACE) fluent-bit || true
+	#helm del --namespace $(NAMESPACE) apm-server || true
 	helm del --namespace $(NAMESPACE) kibana || true
 	helm del --namespace $(NAMESPACE) elasticsearch || true
 	
@@ -49,12 +49,13 @@ secrets:
 	docker rm -f elastic-helm-charts-certs && \
 	openssl pkcs12 -nodes -passin pass:'' -in elastic-certificates.p12 -out elastic-certificate.pem && \
 	openssl x509 -outform der -in elastic-certificate.pem -out elastic-certificate.crt && \
-	kubectl create secret generic elastic-certificates --from-file=elastic-certificates.p12 && \
-	kubectl create secret generic elastic-certificate-pem --from-file=elastic-certificate.pem && \
-	kubectl create secret generic elastic-certificate-crt --from-file=elastic-certificate.crt && \
-	kubectl create secret generic elastic-credentials --from-literal=password=$$password --from-literal=username=elastic && \
+	kubectl
+	kubectl create secret generic elastic-certificates --from-file=elastic-certificates.p12 --namespace=$(NAMESPACE) && \
+	kubectl create secret generic elastic-certificate-pem --from-file=elastic-certificate.pem --namespace=$(NAMESPACE) && \
+	kubectl create secret generic elastic-certificate-crt --from-file=elastic-certificate.crt --namespace=$(NAMESPACE) && \
+	kubectl create secret generic elastic-credentials --from-literal=password=$$password --from-literal=username=elastic --namespace=$(NAMESPACE) && \
 	rm -f elastic-certificates.p12 elastic-certificate.pem elastic-certificate.crt elastic-stack-ca.p12
 
 secrets-kibana:
 	encryptionkey=$$(docker run --rm busybox:1.31.1 /bin/sh -c "< /dev/urandom tr -dc _A-Za-z0-9 | head -c50") && \
-	kubectl create secret generic kibana --from-literal=encryptionkey=$$encryptionkey
+	kubectl create secret generic kibana --from-literal=encryptionkey=$$encryptionkey --namespace=$(NAMESPACE)
