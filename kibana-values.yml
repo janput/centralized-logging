@@ -35,7 +35,7 @@ kibanaConfig:
 ingress:
   enabled: true
   hosts:
-    - host: centralized-logging-kibana.test.paas.onemrva.priv
+    - host: {{ Values.namespace }}-kibana.test.paas.onemrva.priv
       paths:
         - path: /
 
