@@ -14,7 +14,7 @@ install:
 	helm repo add elastic https://helm.elastic.co
 	helm repo add fluent https://fluent.github.io/helm-charts
 	helm repo update
-	kubectl create namespace $(NAMESPACE)
+	kubectl create namespace $(NAMESPACE) || true
 	helm upgrade --wait --timeout=$(TIMEOUT) --install --namespace $(NAMESPACE) --values elasticsearch-values.yml elasticsearch elastic/elasticsearch --version $(CHART_VERSION)
 	helm upgrade --wait --timeout=$(TIMEOUT) --install --namespace $(NAMESPACE) --values kibana-values.yml kibana elastic/kibana --version $(CHART_VERSION)
 	helm upgrade --wait --timeout=$(TIMEOUT) --install --namespace $(NAMESPACE) --values apm-values.yml apm-server elastic/apm-server --version $(CHART_VERSION)
@@ -25,12 +25,12 @@ install:
 purge:
 	kubectl delete secrets elastic-credentials elastic-certificates elastic-certificate-pem elastic-certificate-crt || true
 	kubectl delete secret kibana || true
-	helm del --namespace kube-system metricbeat
-	helm del --namespace $(NAMESPACE) elastichq
-	helm del --namespace $(NAMESPACE) fluent-bit
-	helm del --namespace $(NAMESPACE) apm-server
-	helm del --namespace $(NAMESPACE) kibana
-	helm del --namespace $(NAMESPACE) elasticsearch
+	helm del --namespace kube-system metricbeat || true
+	helm del --namespace $(NAMESPACE) elastichq || true
+	helm del --namespace $(NAMESPACE) fluent-bit || true
+	helm del --namespace $(NAMESPACE) apm-server || true
+	helm del --namespace $(NAMESPACE) kibana || true
+	helm del --namespace $(NAMESPACE) elasticsearch || true
 	
 
 pull-elasticsearch-image:
